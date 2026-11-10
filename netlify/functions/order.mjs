@@ -1,6 +1,7 @@
-// KishMish: saytdagi buyurtmani Telegram'ga yuboradi.
-// Bot tokeni va chat ID faqat Netlify muhit o'zgaruvchilaridan olinadi:
+// KishMish: saytdagi buyurtmani Supabase bazasiga yozadi va Telegram'ga yuboradi.
+// Barcha kalitlar faqat Netlify muhit o'zgaruvchilaridan olinadi:
 //   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+//   SUPABASE_URL, SUPABASE_SECRET_KEY
 // (Netlify → Site configuration → Environment variables)
 
 const MAX_BODY = 8000;          // juda katta so'rovlarni qabul qilmaymiz
@@ -24,6 +25,27 @@ const clean = (v, keepLines = false) => {
 };
 
 const money = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " so'm";
+
+// Buyurtmani Supabase'dagi «buyurtmalar» jadvaliga yozadi.
+// Xato bo'lsa faqat logga yozadi — Telegram xabari baribir yuboriladi.
+async function saveToSupabase(row) {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SECRET_KEY;
+  if (!url || !key) { console.error("Supabase sozlanmagan: SUPABASE_URL yoki SUPABASE_SECRET_KEY yo'q"); return; }
+  const headers = { "Content-Type": "application/json", apikey: key, Prefer: "return=minimal" };
+  if (key.startsWith("eyJ")) headers.Authorization = `Bearer ${key}`;   // eski (JWT) service_role kaliti uchun
+  try {
+    const res = await fetch(`${url.replace(/\/+$/, "")}/rest/v1/buyurtmalar`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(row),
+      signal: AbortSignal.timeout(5000)
+    });
+    if (!res.ok) console.error("Supabase xatosi:", res.status, (await res.text().catch(() => "")).slice(0, 300));
+  } catch (err) {
+    console.error("Supabase'ga ulanib bo'lmadi:", err?.name, err?.cause?.code || "");   // kalitni logga chiqarmaymiz
+  }
+}
 
 function rateLimited(ip) {
   const now = Date.now();
@@ -70,6 +92,7 @@ export default async (req, context) => {
   if (name.length < 2 || name.length > 60 || !/\p{L}/u.test(name)) return json(400, { ok: false, error: "name" });
   if (!/^[+\d\s()-]+$/.test(phone) || digits.length < 9 || digits.length > 15) return json(400, { ok: false, error: "phone" });
   if (note.length > 500) return json(400, { ok: false, error: "note" });
+  if (d.rozilik !== true) return json(400, { ok: false, error: "consent" });
 
   // Savat tekshiruvi
   if (!Array.isArray(d.items) || d.items.length < 1 || d.items.length > MAX_ITEMS) return json(400, { ok: false, error: "items" });
@@ -83,6 +106,16 @@ export default async (req, context) => {
   }
   const total = items.reduce((a, i) => a + i.qty * i.price, 0);
   const langs = { uz: "O'zbek", ru: "Rus", en: "Ingliz" };
+
+  // Avval bazaga yozamiz (xato bo'lsa ham davom etamiz)
+  await saveToSupabase({
+    ism: name,
+    telefon: phone,
+    izoh: note || null,
+    taomlar: items.map(i => ({ nomi: i.title, miqdor_kg: i.qty, narx: i.price, summa: i.qty * i.price })),
+    jami: total,
+    rozilik: true
+  });
 
   const text = [
     "🛒 Yangi buyurtma (saytdan)",

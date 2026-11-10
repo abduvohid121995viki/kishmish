@@ -274,6 +274,10 @@ body.drawer-open .drawer { transform: translate(-50%, 0); visibility: visible; }
 .ofields textarea { resize: vertical; min-height: 70px; }
 .ofields input:focus, .ofields textarea:focus { outline: 2px solid var(--teal); outline-offset: 0; border-color: transparent; }
 .ofields [aria-invalid="true"] { border-color: #B3261E; }
+.ofields .oconsent { display: flex; align-items: flex-start; gap: 10px; font-size: .86rem; font-weight: 600; color: var(--ink); line-height: 1.4; cursor: pointer; }
+.ofields .oconsent input { flex: none; width: 20px; height: 20px; margin: 1px 0 0; padding: 0; accent-color: var(--teal); cursor: pointer; }
+.ofields .oconsent input[aria-invalid="true"] { outline: 2px solid #B3261E; outline-offset: 2px; }
+.ofields .oconsent a { color: var(--gold-ink); font-weight: 700; }
 .ofields .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .oerr { margin-top: 12px; font-size: .88rem; font-weight: 700; color: #B3261E; }
 .oerr a { color: var(--ink); white-space: nowrap; }
@@ -455,7 +459,7 @@ body.drawer-open .drawer { transform: translate(-50%, 0); visibility: visible; }
   </section>
 </main>
 
-<footer><div class="wrap in"><span>© <span id="year">2026</span> KishMish · <span data-t="foot"></span></span><span>Telegram: @kishmish_seller · Instagram: @kishmishuz</span></div></footer>
+<footer><div class="wrap in"><span>© <span id="year">2026</span> KishMish · <span data-t="foot"></span></span><span>Telegram: @kishmish_seller · Instagram: @kishmishuz · <a href="privacy.html" style="color:inherit" data-t="f.privacy">Maxfiylik siyosati</a></span></div></footer>
 
 <a class="fab" href="https://t.me/kishmish_seller" target="_blank" rel="noopener" aria-label="Telegram">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13 1.4 11.5c-1-.3-1-1 .2-1.5L20.5 2.8c.9-.3 1.6.2 1.4 1.5z"/></svg>
@@ -487,6 +491,7 @@ body.drawer-open .drawer { transform: translate(-50%, 0); visibility: visible; }
       <label><span data-t="f.name"></span><input id="fName" name="name" autocomplete="name" maxlength="60" required></label>
       <label><span data-t="f.phone"></span><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+998 90 123 45 67" required></label>
       <label><span data-t="f.note"></span><textarea id="fNote" name="note" rows="2" maxlength="500"></textarea></label>
+      <label class="oconsent"><input type="checkbox" id="fConsent" name="rozilik" required><span><span data-t="f.consent"></span> · <a href="privacy.html" target="_blank" rel="noopener" data-t="f.privacy"></a></span></label>
       <label class="hp" aria-hidden="true">Website <input id="fSite" name="website" tabindex="-1" autocomplete="off"></label>
     </div>
     <p class="oerr" id="orderErr" role="alert" hidden><span id="orderErrText"></span> <a id="orderErrPhone" href="tel:+998911657787">+998 91 165 77 87</a></p>
@@ -612,6 +617,8 @@ const T = {
     "cart.empty":"Savat bo'sh",
     "f.name":"Ismingiz","f.phone":"Telefon raqamingiz","f.note":"Manzil yoki izoh","f.send":"Yuborish","f.sending":"Yuborilmoqda…",
     "err.name":"Ismingizni kiriting (2–60 ta harf).","err.phone":"Telefon raqamini to'g'ri kiriting, masalan: +998 90 123 45 67.","err.note":"Izoh juda uzun (500 ta belgigacha).",
+    "f.consent":"Ma'lumotlarim buyurtmani bajarish uchun ishlatilishiga roziman","f.privacy":"Maxfiylik siyosati",
+    "err.consent":"Buyurtma berish uchun ma'lumotlaringiz ishlatilishiga rozilik belgisini qo'ying.",
     "err.wait":"Iltimos, biroz kutib qayta urinib ko'ring yoki qo'ng'iroq qiling:","err.fail":"Buyurtmani yuborib bo'lmadi. Iltimos, qo'ng'iroq qiling:",
     "done.title":"Rahmat! Buyurtmangiz qabul qilindi","done.text":"Tez orada siz bilan bog'lanamiz.","done.close":"Yopish"
   },
@@ -654,6 +661,8 @@ const T = {
     "cart.empty":"Корзина пуста",
     "f.name":"Ваше имя","f.phone":"Номер телефона","f.note":"Адрес или комментарий","f.send":"Отправить","f.sending":"Отправка…",
     "err.name":"Введите имя (2–60 букв).","err.phone":"Введите правильный номер, например: +998 90 123 45 67.","err.note":"Комментарий слишком длинный (до 500 символов).",
+    "f.consent":"Я согласен(на) на использование моих данных для выполнения заказа","f.privacy":"Политика конфиденциальности",
+    "err.consent":"Чтобы оформить заказ, отметьте согласие на использование ваших данных.",
     "err.wait":"Пожалуйста, подождите немного и попробуйте снова или позвоните:","err.fail":"Не удалось отправить заказ. Пожалуйста, позвоните:",
     "done.title":"Спасибо! Ваш заказ принят","done.text":"Мы скоро с вами свяжемся.","done.close":"Закрыть"
   },
@@ -696,6 +705,8 @@ const T = {
     "cart.empty":"Your cart is empty",
     "f.name":"Your name","f.phone":"Phone number","f.note":"Address or comment","f.send":"Send","f.sending":"Sending…",
     "err.name":"Please enter your name (2–60 letters).","err.phone":"Please enter a valid phone number, e.g. +998 90 123 45 67.","err.note":"The comment is too long (up to 500 characters).",
+    "f.consent":"I agree to my data being used to fulfil the order","f.privacy":"Privacy policy",
+    "err.consent":"To place an order, please tick the box to agree to the use of your data.",
     "err.wait":"Please wait a moment and try again, or call us:","err.fail":"We couldn't send your order. Please call us:",
     "done.title":"Thank you! Your order has been received","done.text":"We will contact you soon.","done.close":"Close"
   }
@@ -799,7 +810,8 @@ function checkForm(f) {
   const digits = f.phone.replace(/\D/g, "");
   if (!/^[+\d\s()-]+$/.test(f.phone) || digits.length < 9 || digits.length > 15) bad.push(["fPhone", "err.phone"]);
   if (f.note.length > 500) bad.push(["fNote", "err.note"]);
-  ["fName", "fPhone", "fNote"].forEach(id => document.getElementById(id).setAttribute("aria-invalid", bad.some(b => b[0] === id)));
+  if (!f.rozilik) bad.push(["fConsent", "err.consent"]);
+  ["fName", "fPhone", "fNote", "fConsent"].forEach(id => document.getElementById(id).setAttribute("aria-invalid", bad.some(b => b[0] === id)));
   return bad;
 }
 
@@ -807,7 +819,7 @@ async function sendOrder(e) {
   e.preventDefault();
   if (sending || !cart.length) return;
   const val = id => document.getElementById(id).value.trim();
-  const f = { name: val("fName").replace(/\s+/g, " "), phone: val("fPhone"), note: val("fNote") };
+  const f = { name: val("fName").replace(/\s+/g, " "), phone: val("fPhone"), note: val("fNote"), rozilik: document.getElementById("fConsent").checked };
   const bad = checkForm(f);
   if (bad.length) { showErr(bad[0][1]); document.getElementById(bad[0][0]).focus(); return; }
   const elapsed = Date.now() - orderOpenedAt;

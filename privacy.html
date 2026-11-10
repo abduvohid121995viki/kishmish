@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maxfiylik siyosati — KishMish</title>
+<meta name="description" content="KishMish saytida qanday ma'lumotlar yig'iladi, nima uchun ishlatiladi va qancha saqlanadi.">
+<meta name="theme-color" content="#FAF6EE">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+/* Ranglar va shriftlar asosiy sahifa (index.html) bilan bir xil */
+:root {
+  --bg: #FAF6EE;
+  --bg-2: #F3EBDD;
+  --card: #FFFFFF;
+  --ink: #3A1E25;
+  --muted: #7A5A60;
+  --line: #E8DCC8;
+  --gold: #CDAA5F;
+  --gold-ink: #9A7A35;
+  --gold-grad: linear-gradient(135deg, #B8944A 0%, #E6CD8E 50%, #B8944A 100%);
+  --teal: #2BA3A8;
+  --dark: #14100C;
+  --display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --body: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+h1, h2 { font-family: var(--display); font-weight: 600; line-height: 1.05; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+a { color: var(--gold-ink); font-weight: 700; }
+.wrap { max-width: 820px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left)); }
+header { position: sticky; top: 0; z-index: 5; background: rgba(250,246,238,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+header .in { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.back { text-decoration: none; color: var(--ink); font-weight: 800; font-size: .9rem; display: inline-flex; align-items: center; gap: 8px; }
+.back b { font-family: var(--display); font-size: 1.5rem; font-weight: 700; }
+.langs { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); }
+.langs button { border: 0; background: none; color: var(--muted); font-weight: 800; font-size: .72rem; letter-spacing: .08em; padding: 6px 9px; border-radius: 999px; cursor: pointer; }
+.langs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: .74rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-ink); }
+.eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--gold); }
+main { padding-block: 48px 72px; }
+main h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); margin: 14px 0 10px; }
+.upd { color: var(--muted); font-size: .9rem; margin: 0 0 28px; }
+.lead { font-size: 1.05rem; }
+section.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; margin-top: 16px; }
+section.card h2 { font-size: 1.7rem; margin-bottom: 8px; }
+section.card p { margin: 8px 0; }
+ul { margin: 8px 0; padding-left: 20px; }
+li { margin: 4px 0; }
+li::marker { color: var(--gold); }
+.contact { background: var(--dark); color: #EDE3D3; border-color: var(--dark); }
+.contact h2 { color: #E6CD8E; }
+.contact a { color: #E6CD8E; }
+[lang-block] { display: none; }
+html[lang="uz"] [lang-block="uz"], html[lang="ru"] [lang-block="ru"], html[lang="en"] [lang-block="en"] { display: block; }
+footer { background: var(--ink); color: #BFA9AC; font-size: .86rem; padding-block: 24px 40px; }
+footer a { color: inherit; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header><div class="wrap in">
+  <a class="back" href="index.html"><span aria-hidden="true">←</span> <b>KishMish</b></a>
+  <div class="langs" role="group" aria-label="Til / Язык / Language">
+    <button type="button" data-lang="uz" aria-pressed="true">UZ</button>
+    <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+<!-- ===================== O'ZBEKCHA ===================== -->
+<div lang-block="uz" lang="uz">
+  <span class="eyebrow">KishMish</span>
+  <h1>Maxfiylik siyosati</h1>
+  <p class="upd">Oxirgi yangilanish: 2026-yil 10-noyabr</p>
+  <p class="lead">Bu sahifada KishMish saytida buyurtma berganingizda qanday ma'lumotlar yig'ilishi, ular nima uchun ishlatilishi, qancha saqlanishi va ularni o'chirishni qanday so'rashingiz mumkinligi tushuntirilgan.</p>
+
+  <section class="card">
+    <h2>Qanday ma'lumot yig'iladi</h2>
+    <p>Buyurtma formasini yuborganingizda quyidagilarni olamiz:</p>
+    <ul>
+      <li>ismingiz;</li>
+      <li>telefon raqamingiz;</li>
+      <li>manzil yoki izoh (agar yozsangiz);</li>
+      <li>tanlagan mahsulotlar, ularning miqdori va buyurtmaning jami summasi;</li>
+      <li>ma'lumotlaringiz ishlatilishiga rozilik bergansiz degan belgi;</li>
+      <li>saytni qaysi tilda ko'rganingiz.</li>
+    </ul>
+    <p>Spam va suiiste'mollikning oldini olish uchun IP manzilingiz qisqa vaqt (taxminan 10 daqiqa) server xotirasida turadi va bazaga yozilmaydi. Savatingiz va tanlagan tilingiz faqat o'z qurilmangizda (brauzer xotirasida) saqlanadi va bizga yuborilmaydi.</p>
+    <p>Biz reklama kuzatuvchilari yoki analitika cookie'laridan foydalanmaymiz.</p>
+  </section>
+
+  <section class="card">
+    <h2>Nima uchun</h2>
+    <ul>
+      <li>buyurtmangizni qabul qilish, tasdiqlash uchun siz bilan bog'lanish va mahsulotni yetkazib berish;</li>
+      <li>buyurtma bo'yicha savol yoki muammo chiqsa, uni hal qilish;</li>
+      <li>buyurtmalar tarixini yuritish va xizmat sifatini yaxshilash.</li>
+    </ul>
+    <p>Ma'lumotlaringizni sotmaymiz va reklama uchun boshqalarga bermaymiz. Ular faqat buyurtmani bajarish uchun zarur bo'lgan xizmatlar orqali o'tadi: sayt hostingi (Netlify), buyurtmalar bazasi (Supabase) va buyurtma xabari keladigan Telegram. Yetkazib berish uchun manzil va telefon kuryerga berilishi mumkin.</p>
+  </section>
+
+  <section class="card">
+    <h2>Qancha saqlanadi</h2>
+    <p>Buyurtma ma'lumotlari buyurtma bajarilgan kundan boshlab <strong>12 oy</strong> saqlanadi, keyin o'chiriladi. Agar qonun talab qilsa (masalan, buxgalteriya hisoboti uchun), ayrim ma'lumotlar qonunda belgilangan muddatgacha saqlanishi mumkin.</p>
+  </section>
+
+  <section class="card contact">
+    <h2>O'chirishni qanday so'rash mumkin</h2>
+    <p>Siz haqingizdagi qaysi ma'lumotlar saqlanganini bilish, ularni tuzatish yoki butunlay o'chirishni so'rash uchun bizga yozing yoki qo'ng'iroq qiling:</p>
+    <ul>
+      <li>Telegram: <a href="https://t.me/kishmish_seller" target="_blank" rel="noopener">@kishmish_seller</a></li>
+      <li>Telefon: <a href="tel:+998911657787">+998 91 165 77 87</a></li>
+    </ul>
+    <p>Buyurtmada ko'rsatilgan ism va telefon raqamini ayting, shunda yozuvlaringizni topamiz. So'rovingizni 30 kun ichida bajaramiz va natijasini sizga xabar qilamiz. Rozilikni istalgan vaqtda qaytarib olishingiz mumkin.</p>
+  </section>
+
+  <section class="card">
+    <h2>O'zgarishlar</h2>
+    <p>Bu siyosat yangilansa, yangi matn shu sahifada e'lon qilinadi va yuqoridagi sana o'zgaradi.</p>
+  </section>
+</div>
+
+<!-- ===================== РУССКИЙ ===================== -->
+<div lang-block="ru" lang="ru">
+  <span class="eyebrow">KishMish</span>
+  <h1>Политика конфиденциальности</h1>
+  <p class="upd">Последнее обновление: 10 ноября 2026 г.</p>
+  <p class="lead">На этой странице объясняется, какие данные собираются, когда вы оформляете заказ на сайте KishMish, для чего они используются, сколько хранятся и как попросить их удалить.</p>
+
+  <section class="card">
+    <h2>Какие данные собираются</h2>
+    <p>Когда вы отправляете форму заказа, мы получаем:</p>
+    <ul>
+      <li>ваше имя;</li>
+      <li>номер телефона;</li>
+      <li>адрес или комментарий (если вы его указали);</li>
+      <li>выбранные товары, их количество и общую сумму заказа;</li>
+      <li>отметку о том, что вы согласились на использование ваших данных;</li>
+      <li>язык, на котором вы просматривали сайт.</li>
+    </ul>
+    <p>Чтобы защититься от спама и злоупотреблений, ваш IP-адрес ненадолго (около 10 минут) хранится в памяти сервера и в базу не записывается. Корзина и выбранный язык хранятся только на вашем устройстве (в памяти браузера) и нам не передаются.</p>
+    <p>Мы не используем рекламные трекеры и аналитические cookie.</p>
+  </section>
+
+  <section class="card">
+    <h2>Для чего</h2>
+    <ul>
+      <li>чтобы принять заказ, связаться с вами для подтверждения и доставить товар;</li>
+      <li>чтобы решить вопросы или проблемы, связанные с заказом;</li>
+      <li>чтобы вести историю заказов и улучшать качество обслуживания.</li>
+    </ul>
+    <p>Мы не продаём ваши данные и не передаём их другим для рекламы. Они проходят только через сервисы, необходимые для выполнения заказа: хостинг сайта (Netlify), база заказов (Supabase) и Telegram, куда приходит сообщение о заказе. Для доставки адрес и телефон могут быть переданы курьеру.</p>
+  </section>
+
+  <section class="card">
+    <h2>Сколько хранятся</h2>
+    <p>Данные заказа хранятся <strong>12 месяцев</strong> со дня выполнения заказа, после чего удаляются. Если этого требует закон (например, для бухгалтерской отчётности), отдельные данные могут храниться в течение установленного законом срока.</p>
+  </section>
+
+  <section class="card contact">
+    <h2>Как попросить удалить данные</h2>
+    <p>Чтобы узнать, какие данные о вас хранятся, исправить их или попросить полностью удалить, напишите или позвоните нам:</p>
+    <ul>
+      <li>Telegram: <a href="https://t.me/kishmish_seller" target="_blank" rel="noopener">@kishmish_seller</a></li>
+      <li>Телефон: <a href="tel:+998911657787">+998 91 165 77 87</a></li>
+    </ul>
+    <p>Назовите имя и номер телефона, указанные в заказе, чтобы мы нашли ваши записи. Мы выполним запрос в течение 30 дней и сообщим вам результат. Вы можете отозвать согласие в любое время.</p>
+  </section>
+
+  <section class="card">
+    <h2>Изменения</h2>
+    <p>Если политика обновится, новый текст будет опубликован на этой странице, а дата вверху изменится.</p>
+  </section>
+</div>
+
+<!-- ===================== ENGLISH ===================== -->
+<div lang-block="en" lang="en">
+  <span class="eyebrow">KishMish</span>
+  <h1>Privacy policy</h1>
+  <p class="upd">Last updated: 10 November 2026</p>
+  <p class="lead">This page explains what data is collected when you place an order on the KishMish website, why it is used, how long it is kept and how you can ask for it to be deleted.</p>
+
+  <section class="card">
+    <h2>What data we collect</h2>
+    <p>When you submit the order form, we receive:</p>
+    <ul>
+      <li>your name;</li>
+      <li>your phone number;</li>
+      <li>your address or comment (if you add one);</li>
+      <li>the products you chose, their quantities and the order total;</li>
+      <li>a record that you agreed to the use of your data;</li>
+      <li>the language you were viewing the site in.</li>
+    </ul>
+    <p>To protect against spam and abuse, your IP address is held briefly (about 10 minutes) in the server's memory and is not written to the database. Your cart and chosen language are stored only on your own device (in your browser) and are not sent to us.</p>
+    <p>We do not use advertising trackers or analytics cookies.</p>
+  </section>
+
+  <section class="card">
+    <h2>Why we use it</h2>
+    <ul>
+      <li>to accept your order, contact you to confirm it and deliver the products;</li>
+      <li>to resolve any questions or problems with the order;</li>
+      <li>to keep a history of orders and improve our service.</li>
+    </ul>
+    <p>We do not sell your data or share it with others for advertising. It passes only through the services needed to fulfil the order: website hosting (Netlify), the order database (Supabase) and Telegram, where the order message arrives. For delivery, your address and phone number may be given to the courier.</p>
+  </section>
+
+  <section class="card">
+    <h2>How long we keep it</h2>
+    <p>Order data is kept for <strong>12 months</strong> from the day the order is completed and is then deleted. Where the law requires it (for example, for accounting records), some data may be kept for the period the law sets.</p>
+  </section>
+
+  <section class="card contact">
+    <h2>How to ask for deletion</h2>
+    <p>To find out what data we hold about you, correct it or ask for it to be deleted completely, message or call us:</p>
+    <ul>
+      <li>Telegram: <a href="https://t.me/kishmish_seller" target="_blank" rel="noopener">@kishmish_seller</a></li>
+      <li>Phone: <a href="tel:+998911657787">+998 91 165 77 87</a></li>
+    </ul>
+    <p>Give us the name and phone number used in the order so we can find your records. We will complete your request within 30 days and let you know the result. You can withdraw your consent at any time.</p>
+  </section>
+
+  <section class="card">
+    <h2>Changes</h2>
+    <p>If this policy is updated, the new text will be published on this page and the date at the top will change.</p>
+  </section>
+</div>
+
+</main>
+
+<footer><div class="wrap">© 2026 KishMish · <a href="index.html" id="home">kishmish</a></div></footer>
+
+<script>
+// Tilni asosiy sahifa bilan bir xil saqlaymiz (localStorage "km-lang")
+const TITLES = { uz: "Maxfiylik siyosati — KishMish", ru: "Политика конфиденциальности — KishMish", en: "Privacy policy — KishMish" };
+const HOME = { uz: "Bosh sahifa", ru: "Главная", en: "Home" };
+function setLang(l) {
+  if (!TITLES[l]) l = "uz";
+  document.documentElement.lang = l;
+  document.title = TITLES[l];
+  document.getElementById("home").textContent = HOME[l];
+  document.querySelectorAll(".langs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  try { localStorage.setItem("km-lang", l); } catch (e) {}
+}
+let start = "uz";
+try { start = localStorage.getItem("km-lang") || "uz"; } catch (e) {}
+const q = new URLSearchParams(location.search).get("lang");
+if (q) start = q;
+setLang(start);
+document.querySelector(".langs").addEventListener("click", e => {
+  const b = e.target.closest("button[data-lang]"); if (b) setLang(b.dataset.lang);
+});
+</script>
+</body>
+</html>
