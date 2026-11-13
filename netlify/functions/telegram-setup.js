@@ -1,7 +1,7 @@
 // KishMish: Telegram botni sozlash sahifasi (/api/telegram-setup).
 // Brauzerda bir marta oching — bot quyidagicha sozlanadi:
 //   1) webhook  → shu saytdagi /api/telegram (maxfiy belgi bilan)
-//   2) buyruqlar ro'yxati (/start, /bugun, /buyurtmalar) — faqat egasining chatida
+//   2) buyruqlar ro'yxati (/start, /bugun, /hafta, /oy, /buyurtmalar) — faqat egasining chatida
 //   3) «Menyu» tugmasi → shu saytni Telegram Mini App sifatida ochadi
 // Token faqat TELEGRAM_BOT_TOKEN muhit o'zgaruvchisidan olinadi va sahifada ko'rsatilmaydi.
 
@@ -11,16 +11,22 @@ const COMMANDS = {
   uz: [
     { command: "start", description: "Buyruqlar ro'yxati" },
     { command: "bugun", description: "Bugungi buyurtmalar soni va summasi" },
+    { command: "hafta", description: "Oxirgi 7 kun: soni va summasi" },
+    { command: "oy", description: "Oxirgi 30 kun: soni va summasi" },
     { command: "buyurtmalar", description: "Oxirgi 10 ta buyurtma" }
   ],
   ru: [
     { command: "start", description: "Список команд" },
     { command: "bugun", description: "Заказы за сегодня: количество и сумма" },
+    { command: "hafta", description: "Последние 7 дней: количество и сумма" },
+    { command: "oy", description: "Последние 30 дней: количество и сумма" },
     { command: "buyurtmalar", description: "Последние 10 заказов" }
   ],
   en: [
     { command: "start", description: "List of commands" },
     { command: "bugun", description: "Today's orders: count and total" },
+    { command: "hafta", description: "Last 7 days: count and total" },
+    { command: "oy", description: "Last 30 days: count and total" },
     { command: "buyurtmalar", description: "Last 10 orders" }
   ]
 };
@@ -105,7 +111,7 @@ export default async req => {
   rows.push({
     ok: !cmdBad,
     name: "Buyruqlar ro'yxati sozlandi",
-    info: cmdBad ? `Xato: ${cmdBad.error}` : "/start, /bugun, /buyurtmalar (o'zbek, rus, ingliz) — faqat sizning chatingizda"
+    info: cmdBad ? `Xato: ${cmdBad.error}` : "/start, /bugun, /hafta, /oy, /buyurtmalar (o'zbek, rus, ingliz) — faqat sizning chatingizda"
   });
 
   const menu = await api("setChatMenuButton", { menu_button: { type: "web_app", text: "Menyu", web_app: { url: appUrl } } });
