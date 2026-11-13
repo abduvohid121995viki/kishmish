@@ -15,8 +15,9 @@ const TZ_OFFSET = 5 * 60 * 60 * 1000;   // Toshkent = UTC+5 (yozgi vaqt yo'q)
 const TXT = {
   uz: {
     menu: "Buyurtma berish uchun pastdagi «Menyu» tugmasini bosing.",
-    help: "KishMish bot buyruqlari:\n\n/bugun — bugungi buyurtmalar soni va jami summasi\n/buyurtmalar — oxirgi 10 ta buyurtma\n/start — shu ro'yxat",
-    today: (n, sum, date) => `📅 Bugun (${date}, Toshkent vaqti)\n\n🛒 Buyurtmalar: ${n} ta\n💰 Jami: ${sum}`,
+    help: "KishMish bot buyruqlari:\n\n/bugun — bugungi buyurtmalar soni va jami summasi\n/hafta — oxirgi 7 kun\n/oy — oxirgi 30 kun\n/buyurtmalar — oxirgi 10 ta buyurtma\n/start — shu ro'yxat",
+    period: { bugun: "Bugun", hafta: "Oxirgi 7 kun", oy: "Oxirgi 30 kun" },
+    report: (title, range, n, sum) => `📅 ${title} (${range}, Toshkent vaqti)\n\n🛒 Buyurtmalar: ${n} ta\n💰 Jami: ${sum}`,
     lastTitle: "🧾 Oxirgi buyurtmalar:",
     none: "Hozircha buyurtma yo'q.",
     dbErr: "Bazadan ma'lumot olib bo'lmadi. Keyinroq qayta urinib ko'ring.",
@@ -24,8 +25,9 @@ const TXT = {
   },
   ru: {
     menu: "Чтобы сделать заказ, нажмите кнопку «Menyu» внизу.",
-    help: "Команды бота KishMish:\n\n/bugun — количество и сумма заказов за сегодня\n/buyurtmalar — последние 10 заказов\n/start — этот список",
-    today: (n, sum, date) => `📅 Сегодня (${date}, ташкентское время)\n\n🛒 Заказов: ${n}\n💰 Итого: ${sum}`,
+    help: "Команды бота KishMish:\n\n/bugun — количество и сумма заказов за сегодня\n/hafta — последние 7 дней\n/oy — последние 30 дней\n/buyurtmalar — последние 10 заказов\n/start — этот список",
+    period: { bugun: "Сегодня", hafta: "Последние 7 дней", oy: "Последние 30 дней" },
+    report: (title, range, n, sum) => `📅 ${title} (${range}, ташкентское время)\n\n🛒 Заказов: ${n}\n💰 Итого: ${sum}`,
     lastTitle: "🧾 Последние заказы:",
     none: "Заказов пока нет.",
     dbErr: "Не удалось получить данные из базы. Попробуйте позже.",
@@ -33,8 +35,9 @@ const TXT = {
   },
   en: {
     menu: "To place an order, tap the «Menyu» button below.",
-    help: "KishMish bot commands:\n\n/bugun — today's order count and total\n/buyurtmalar — last 10 orders\n/start — this list",
-    today: (n, sum, date) => `📅 Today (${date}, Tashkent time)\n\n🛒 Orders: ${n}\n💰 Total: ${sum}`,
+    help: "KishMish bot commands:\n\n/bugun — today's order count and total\n/hafta — last 7 days\n/oy — last 30 days\n/buyurtmalar — last 10 orders\n/start — this list",
+    period: { bugun: "Today", hafta: "Last 7 days", oy: "Last 30 days" },
+    report: (title, range, n, sum) => `📅 ${title} (${range}, Tashkent time)\n\n🛒 Orders: ${n}\n💰 Total: ${sum}`,
     lastTitle: "🧾 Latest orders:",
     none: "No orders yet.",
     dbErr: "Couldn't read data from the database. Please try again later.",
@@ -76,17 +79,26 @@ async function supabase(query, extraHeaders = {}) {
   return { rows: await res.json(), range: res.headers.get("content-range") };
 }
 
-async function todayReport(L) {
+// Davr hisoboti: bugun, oxirgi 7 kun yoki oxirgi 30 kun (bugun ham kiradi), Toshkent vaqti bo'yicha
+const PERIOD_DAYS = { bugun: 1, hafta: 7, oy: 30 };
+const DAY = 24 * 60 * 60 * 1000;
+const PAGE = 1000;   // Supabase bir so'rovda ko'pi bilan 1000 qator beradi
+
+async function periodReport(L, kind) {
   const now = tashkent(Date.now());
-  const startMs = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - TZ_OFFSET;
-  const from = new Date(startMs).toISOString();
-  const to = new Date(startMs + 24 * 60 * 60 * 1000).toISOString();
-  const q = `select=jami&yaratilgan=gte.${encodeURIComponent(from)}&yaratilgan=lt.${encodeURIComponent(to)}&limit=10000`;
-  const { rows, range } = await supabase(q, { Prefer: "count=exact" });
-  const total = rows.reduce((a, r) => a + (Number(r.jami) || 0), 0);
-  const counted = Number(String(range || "").split("/")[1]);
-  const n = Number.isFinite(counted) ? counted : rows.length;
-  return TXT[L].today(n, money(total, L), fmtDate(Date.now()));
+  const tomorrowMs = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - TZ_OFFSET + DAY;
+  const fromMs = tomorrowMs - PERIOD_DAYS[kind] * DAY;
+  const base = `select=jami&yaratilgan=gte.${encodeURIComponent(new Date(fromMs).toISOString())}` +
+               `&yaratilgan=lt.${encodeURIComponent(new Date(tomorrowMs).toISOString())}&order=id.asc`;
+  let n = 0, total = 0;
+  for (let offset = 0; offset < 100 * PAGE; offset += PAGE) {
+    const { rows } = await supabase(`${base}&limit=${PAGE}&offset=${offset}`);
+    n += rows.length;
+    total += rows.reduce((a, r) => a + (Number(r.jami) || 0), 0);
+    if (rows.length < PAGE) break;
+  }
+  const range = kind === "bugun" ? fmtDate(fromMs) : `${fmtDate(fromMs)} – ${fmtDate(tomorrowMs - DAY)}`;
+  return TXT[L].report(TXT[L].period[kind], range, n, money(total, L));
 }
 
 async function lastOrders(L) {
@@ -137,7 +149,7 @@ export default async req => {
   const cmd = String(msg.text || "").trim().split(/\s+/)[0].split("@")[0].toLowerCase();
   let reply;
   try {
-    if (cmd === "/bugun") reply = await todayReport(L);
+    if (cmd === "/bugun" || cmd === "/hafta" || cmd === "/oy") reply = await periodReport(L, cmd.slice(1));
     else if (cmd === "/buyurtmalar") reply = await lastOrders(L);
     else reply = TXT[L].help;                    // /start va boshqa har qanday matn
   } catch (err) {
